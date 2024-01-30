@@ -1,10 +1,16 @@
+/*
 package com.cji.citas.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Collection;
 
-@Entity
+@Entity @Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Roles {
  
     @Id
@@ -16,4 +22,4 @@ public class Roles {
     private Collection<Users> users;
 
 
-}
+}*/
