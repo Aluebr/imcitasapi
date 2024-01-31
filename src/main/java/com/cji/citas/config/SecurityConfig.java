@@ -46,6 +46,7 @@ public class SecurityConfig {
 								).permitAll()
 								.requestMatchers("/auth/user/**").authenticated()
 								.requestMatchers("/auth/admin/**").authenticated()
+								.requestMatchers("/citas/crear").authenticated()
 								.anyRequest().authenticated()
 				)
 				.sessionManagement(session ->
