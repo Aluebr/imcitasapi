@@ -1,6 +1,7 @@
 package com.cji.citas.controller;
 
 
+import com.cji.citas.dto.TokenDTO;
 import com.cji.citas.entity.AuthRequest;
 import com.cji.citas.entity.Users;
 import com.cji.citas.service.JwtService;
@@ -49,10 +50,12 @@ public class UserController {
     }
 
     @PostMapping("/generateToken")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+    public TokenDTO authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+        TokenDTO newToken = new TokenDTO();
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getUsername());
+            newToken.setToken(jwtService.generateToken(authRequest.getUsername()));
+            return newToken;
         } else {
             throw new UsernameNotFoundException("invalid user request !");
         }
