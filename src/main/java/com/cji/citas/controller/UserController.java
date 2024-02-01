@@ -2,17 +2,23 @@ package com.cji.citas.controller;
 
 
 import com.cji.citas.dto.TokenDTO;
+import com.cji.citas.dto.UsersDTO;
 import com.cji.citas.entity.AuthRequest;
 import com.cji.citas.entity.Users;
+import com.cji.citas.repository.UserInfoRepository;
 import com.cji.citas.service.JwtService;
 import com.cji.citas.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -26,6 +32,7 @@ public class UserController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
 
     @GetMapping("/welcome")
     public String welcome() {
@@ -58,6 +65,18 @@ public class UserController {
             return newToken;
         } else {
             throw new UsernameNotFoundException("invalid user request !");
+        }
+    }
+
+    @GetMapping("/user/email")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<String> getUserEmail(@RequestParam("token") String token) {
+        try {
+            String username = jwtService.extractUsername(token);
+            String email = service.getEmailByUsername(username);
+            return ResponseEntity.ok(email);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 

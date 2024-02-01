@@ -34,7 +34,11 @@ public class UserInfoService implements UserDetailsService {
 		userInfo.setPassword(encoder.encode(userInfo.getPassword())); 
 		repository.save(userInfo); 
 		return "User Added Successfully"; 
-	} 
+	}
 
+	public String getEmailByUsername(String username) {
+		Optional<Users> userDetail = repository.findByName(username);
+		return userDetail.map(Users::getEmail).orElse(null);
+	}
 
 } 
