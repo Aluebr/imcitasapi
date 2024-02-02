@@ -28,13 +28,25 @@ public class UserInfoService implements UserDetailsService {
 		// Converting userDetail to UserDetails 
 		return userDetail.map(UserInfoDetails::new) 
 				.orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
-	} 
+	}
 
 	public String addUser(Users userInfo) {
-		userInfo.setPassword(encoder.encode(userInfo.getPassword())); 
-		repository.save(userInfo); 
-		return "User Added Successfully"; 
+		try {
+			if (userInfo.getPassword() == null || userInfo.getPassword().trim().isEmpty()) {
+				return "";
+			}
+			userInfo.setPassword(encoder.encode(userInfo.getPassword()));
+			if (userInfo.getRoles() == null) {
+				userInfo.setRoles("ROLE_USER");
+			}
+			repository.save(userInfo);
+			return "User Added Successfully";
+		} catch (Exception ex) {
+			ex.getMessage();
+			return "El usuario o el correo ya existen";
+		}
 	}
+
 
 	public String getEmailByUsername(String username) {
 		Optional<Users> userDetail = repository.findByName(username);

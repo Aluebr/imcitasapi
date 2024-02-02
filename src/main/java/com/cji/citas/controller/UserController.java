@@ -41,7 +41,7 @@ public class UserController {
 
     @PostMapping("/addNewUser")
     public String addNewUser(@RequestBody Users user) {
-        return service.addUser(user);
+         return service.addUser(user);
     }
 
     @GetMapping("/user/userProfile")
