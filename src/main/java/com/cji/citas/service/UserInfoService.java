@@ -33,7 +33,11 @@ public class UserInfoService implements UserDetailsService {
 	public String addUser(Users userInfo) {
 		try {
 			if (userInfo.getPassword() == null || userInfo.getPassword().trim().isEmpty()) {
-				return "";
+				return "La contraseña no puede estar vacía";
+			} else if (userInfo.getName() == null || userInfo.getName().trim().isEmpty()) {
+				return "El nombre no puede estar vacío";
+			} else if (userInfo.getEmail() == null || userInfo.getEmail().trim().isEmpty()) {
+				return "El correo no puede estar vacío";
 			}
 			userInfo.setPassword(encoder.encode(userInfo.getPassword()));
 			if (userInfo.getRoles() == null) {
