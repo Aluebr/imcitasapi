@@ -18,6 +18,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -80,4 +82,33 @@ public class UserController {
         }
     }
 
+    @GetMapping("/user/name")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<String> getUserName(@RequestParam("token") String token) {
+        try {
+            String username = jwtService.extractUsername(token);
+            String email = service.getEmailByUsername(username);
+            return ResponseEntity.ok(username);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @GetMapping("/user/gestores")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<List<String>> getAdminNames(){
+        try{
+            List<Users> gestores = service.getAdminUsers();
+
+            List<String> gestoresInfo = new ArrayList<>();
+            gestores.forEach(gestor -> gestoresInfo.add(gestor.getName()));
+
+                    return ResponseEntity.ok(gestoresInfo);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }
+
+

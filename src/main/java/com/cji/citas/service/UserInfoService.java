@@ -7,9 +7,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService; 
 import org.springframework.security.core.userdetails.UsernameNotFoundException; 
 import org.springframework.security.crypto.password.PasswordEncoder; 
-import org.springframework.stereotype.Service; 
+import org.springframework.stereotype.Service;
 
-import java.util.Optional; 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserInfoService implements UserDetailsService { 
@@ -55,6 +58,18 @@ public class UserInfoService implements UserDetailsService {
 	public String getEmailByUsername(String username) {
 		Optional<Users> userDetail = repository.findByName(username);
 		return userDetail.map(Users::getEmail).orElse(null);
+	}
+	public String getUsername(String username) {
+		Optional<Users> userDetail = repository.findByName(username);
+		return userDetail.map(Users::getName).orElse(null);
+	}
+
+	public List<Users> getAdminUsers() {
+		List<Users> users = repository.findAll();
+
+		return users.stream()
+				.filter(user -> Arrays.asList(user.getRoles().split(",")).contains("ROLE_ADMIN"))
+				.collect(Collectors.toList());
 	}
 
 } 
