@@ -42,9 +42,13 @@ public class SecurityConfig {
 								.requestMatchers(
 										"/auth/welcome",
 										"/auth/addNewUser",
-										"/auth/generateToken"
+										"/auth/generateToken",
+										"/citas/citasgestor",
+										"/citas/citagestorydia",
+										"/tipo/cita"
 								).permitAll()
 								.requestMatchers("/auth/user/**").authenticated()
+								.requestMatchers("/auth/user/gestores").authenticated()
 								.requestMatchers("/auth/admin/**").authenticated()
 								.requestMatchers("/citas/crear").authenticated()
 								.anyRequest().authenticated()

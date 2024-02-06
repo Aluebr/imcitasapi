@@ -2,18 +2,8 @@ package com.cji.citas.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
-
-public class TipoCita {
-
-    @Entity
-    @Getter
-    @Setter
-    @ToString
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public class Citas {
+@Entity @Getter @Setter @ToString @AllArgsConstructor @NoArgsConstructor
+public class Tipocita {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +14,5 @@ public class TipoCita {
         private int sesiones;
 
         private float precio;
-
-    }
 
 }

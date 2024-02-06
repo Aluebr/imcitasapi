@@ -10,8 +10,10 @@ import com.cji.citas.service.ICitasService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -40,5 +42,81 @@ public class CitasServiceImpl implements ICitasService {
 
 
     }
+
+
+
+    @Override
+    public List<CitasDTO> obtenerCitasPorGestor(String name) {
+
+        Users gestor = userInfoRepository.findByName(name)
+                .orElseThrow(() -> new IllegalArgumentException("El gestor no existe"));
+
+
+        List<Citas> citas = citasRepository.findByGestor(gestor);
+
+
+        return citas.stream()
+                .map(cita -> {
+                    CitasDTO dto = new CitasDTO();
+                    dto.setId(cita.getId());
+                    dto.setHoraInicio(cita.getHoraInicio());
+                    dto.setHoraFin(cita.getHoraFin());
+
+
+                    UsersDTO usuarioDTO = new UsersDTO();
+                    usuarioDTO.setId(cita.getUsuario().getId());
+                    usuarioDTO.setName(cita.getUsuario().getName());
+                    usuarioDTO.setEmail(cita.getUsuario().getEmail());
+
+                    dto.setUsuario(usuarioDTO);
+
+
+                    UsersDTO gestorDTO = new UsersDTO();
+                    gestorDTO.setId(cita.getGestor().getId());
+                    gestorDTO.setName(cita.getGestor().getName());
+                    gestorDTO.setEmail(cita.getGestor().getEmail());
+
+                    dto.setGestor(gestorDTO);
+
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CitasDTO> obtenerCitasPorGestorYDia(String name, LocalDate diaEspecifico) {
+        Users gestor = userInfoRepository.findByName(name)
+                .orElseThrow(() -> new IllegalArgumentException("El gestor no existe"));
+
+        List<Citas> citas = citasRepository.findByGestor(gestor);
+
+        return citas.stream()
+                .filter(cita -> cita.getHoraInicio().toLocalDate().isEqual(diaEspecifico))
+                .map(cita -> {
+                    CitasDTO dto = new CitasDTO();
+                    dto.setId(cita.getId());
+                    dto.setHoraInicio(cita.getHoraInicio());
+                    dto.setHoraFin(cita.getHoraFin());
+
+                    UsersDTO usuarioDTO = new UsersDTO();
+                    usuarioDTO.setId(cita.getUsuario().getId());
+                    usuarioDTO.setName(cita.getUsuario().getName());
+                    usuarioDTO.setEmail(cita.getUsuario().getEmail());
+                    dto.setUsuario(usuarioDTO);
+
+                    UsersDTO gestorDTO = new UsersDTO();
+                    gestorDTO.setId(cita.getGestor().getId());
+                    gestorDTO.setName(cita.getGestor().getName());
+                    gestorDTO.setEmail(cita.getGestor().getEmail());
+                    dto.setGestor(gestorDTO);
+
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
+
+
+
 
 }
