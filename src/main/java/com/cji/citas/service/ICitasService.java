@@ -5,11 +5,12 @@ import com.cji.citas.dto.UsersDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ICitasService {
 
-    void crearCita(UsersDTO usersDTO, UsersDTO gestor);
+    void crearCita(CitasDTO citsDTO);
 
     List<CitasDTO> obtenerCitasPorGestor(String name);
 

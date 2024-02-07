@@ -26,7 +26,7 @@ public class CitasController {
     public ResponseEntity<String> crearCita(@RequestBody CitasDTO citaRequestDTO) {
         try {
             // Llama al servicio para crear una cita
-            citasService.crearCita(citaRequestDTO.getUsuario(), citaRequestDTO.getGestor());
+            citasService.crearCita(citaRequestDTO);
             return ResponseEntity.ok("Cita creada exitosamente");
         } catch (IllegalArgumentException e) {
             // Manejar el caso en el que el usuario o el gestor no existan

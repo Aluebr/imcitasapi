@@ -23,19 +23,19 @@ public class CitasServiceImpl implements ICitasService {
     private UserInfoRepository userInfoRepository;
 
     @Override
-    public void crearCita(UsersDTO usersDTO, UsersDTO gestor) {
+    public void crearCita(CitasDTO citasDTO) {
 
         Citas cita = new Citas();
 
-        cita.setHoraInicio(LocalDateTime.of(2024, 2, 1, 10, 0)); // Ejemplo: 1 de febrero de 2024, 10:00 AM
-        cita.setHoraFin(LocalDateTime.of(2024, 2, 1, 11, 0)); // Ejemplo: 1 de febrero de 2024, 11:00 AM
+        cita.setHoraInicio(citasDTO.getHoraInicio());
+        cita.setHoraFin(citasDTO.getHoraFin());
 
-        Users currentUser = userInfoRepository.findByName(usersDTO.getName())
+        Users currentUser = userInfoRepository.findByName(citasDTO.getUsuario().getName())
                 .orElseThrow(() -> new IllegalArgumentException("El usuario no existe"));
 
         cita.setUsuario(currentUser);
 
-        Users currentGestor = userInfoRepository.findByName(gestor.getName())
+        Users currentGestor = userInfoRepository.findByName(citasDTO.getGestor().getName())
                 .orElseThrow(() -> new IllegalArgumentException("El gestor no existe"));
 
         cita.setGestor(currentGestor);
