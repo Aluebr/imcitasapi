@@ -11,6 +11,7 @@
     <groupId>com.cji</groupId>
     <artifactId>citas</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>citas</name>
     <description>citas</description>
     <properties>
