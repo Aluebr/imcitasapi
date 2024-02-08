@@ -25,28 +25,27 @@ public class CitasController {
     @PostMapping("/crear")
     public ResponseEntity<String> crearCita(@RequestBody CitasDTO citaRequestDTO) {
         try {
-            // Llama al servicio para crear una cita
+
             citasService.crearCita(citaRequestDTO);
             return ResponseEntity.ok("Cita creada exitosamente");
         } catch (IllegalArgumentException e) {
-            // Manejar el caso en el que el usuario o el gestor no existan
+
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            // Manejar otros errores
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear la cita");
         }
     }
 
-    @GetMapping("/citasgestor")
+    @GetMapping("/citasusuario")
     public ResponseEntity<List<CitasDTO>> obtenerCitasPorGestor(@RequestParam("user") String username) {
         try {
-            List<CitasDTO> citas = citasService.obtenerCitasPorGestor(username);
+            List<CitasDTO> citas = citasService.obtenerCitasPorUsuario(username);
             return ResponseEntity.ok(citas);
         } catch (IllegalArgumentException e) {
-            // Manejo del caso en que el gestor no existe
             return ResponseEntity.badRequest().body(null);
         } catch (Exception e) {
-            // Manejo de cualquier otro error no esperado
+
             return ResponseEntity.internalServerError().body(null);
         }
     }
@@ -62,6 +61,17 @@ public class CitasController {
             return ResponseEntity.badRequest().body(null);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(null);
+        }
+    }
+    @GetMapping("/cantidad")
+    public ResponseEntity<?> cantidadCitasUsuario(@RequestParam("userName") String userName) {
+        try {
+            int cantidad = citasService.cantidadCitasUsuario(userName);
+            return ResponseEntity.ok(cantidad);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error al obtener la cantidad de citas");
         }
     }
 }

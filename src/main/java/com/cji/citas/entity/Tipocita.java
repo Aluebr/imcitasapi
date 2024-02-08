@@ -2,6 +2,9 @@ package com.cji.citas.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
+
 @Entity @Getter @Setter @ToString @AllArgsConstructor @NoArgsConstructor
 public class Tipocita {
 
@@ -14,5 +17,7 @@ public class Tipocita {
         private int sesiones;
 
         private float precio;
+
+
 
 }

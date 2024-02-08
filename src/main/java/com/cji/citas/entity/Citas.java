@@ -24,5 +24,8 @@ public class Citas {
     @JoinColumn(name = "gestor_id")
     private Users gestor;
 
+    @ManyToOne
+    @JoinColumn(name = "tipo_cita_id")
+    private Tipocita tipoCita;
 }
 

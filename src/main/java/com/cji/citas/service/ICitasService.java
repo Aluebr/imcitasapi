@@ -2,6 +2,7 @@ package com.cji.citas.service;
 
 import com.cji.citas.dto.CitasDTO;
 import com.cji.citas.dto.UsersDTO;
+import com.cji.citas.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
@@ -12,7 +13,9 @@ public interface ICitasService {
 
     void crearCita(CitasDTO citsDTO);
 
-    List<CitasDTO> obtenerCitasPorGestor(String name);
+    List<CitasDTO> obtenerCitasPorUsuario(String name);
+
+    int cantidadCitasUsuario(String name);
 
 
     List<CitasDTO> obtenerCitasPorGestorYDia(String name, LocalDate diaEspecifico);

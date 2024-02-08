@@ -15,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -106,6 +108,25 @@ public class UserController {
                     return ResponseEntity.ok(gestoresInfo);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @GetMapping("/validateToken")
+    public ResponseEntity<String> validateToken(@RequestParam("token") String token) {
+        try {
+            String username = jwtService.extractUsername(token);
+            UserDetails userDetails = service.loadUserByUsername(username);
+
+            if (jwtService.validateToken(token, userDetails)) {
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                return ResponseEntity.ok("Token válido");
+            } else {
+                return ResponseEntity.status(401).body("Token no válido o expirado");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Token no válido o expirado");
         }
     }
 

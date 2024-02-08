@@ -1,10 +1,13 @@
 package com.cji.citas.service.impl;
 
 import com.cji.citas.dto.CitasDTO;
+import com.cji.citas.dto.TipocitaDTO;
 import com.cji.citas.dto.UsersDTO;
 import com.cji.citas.entity.Citas;
+import com.cji.citas.entity.Tipocita;
 import com.cji.citas.entity.Users;
 import com.cji.citas.repository.CitasRepository;
+import com.cji.citas.repository.TipocitaRepository;
 import com.cji.citas.repository.UserInfoRepository;
 import com.cji.citas.service.ICitasService;
 import lombok.AllArgsConstructor;
@@ -21,6 +24,7 @@ public class CitasServiceImpl implements ICitasService {
 
     private CitasRepository citasRepository;
     private UserInfoRepository userInfoRepository;
+    private TipocitaRepository tipocitaRepository;
 
     @Override
     public void crearCita(CitasDTO citasDTO) {
@@ -29,6 +33,11 @@ public class CitasServiceImpl implements ICitasService {
 
         cita.setHoraInicio(citasDTO.getHoraInicio());
         cita.setHoraFin(citasDTO.getHoraFin());
+
+        Tipocita currentTipo = tipocitaRepository.findByNombre(citasDTO.getTipoCita().getNombre())
+                .orElseThrow(() -> new IllegalArgumentException("El tipo de cita no existe"));
+
+        cita.setTipoCita(currentTipo);
 
         Users currentUser = userInfoRepository.findByName(citasDTO.getUsuario().getName())
                 .orElseThrow(() -> new IllegalArgumentException("El usuario no existe"));
@@ -39,6 +48,8 @@ public class CitasServiceImpl implements ICitasService {
                 .orElseThrow(() -> new IllegalArgumentException("El gestor no existe"));
 
         cita.setGestor(currentGestor);
+
+
         citasRepository.save(cita);
 
 
@@ -46,14 +57,15 @@ public class CitasServiceImpl implements ICitasService {
 
 
 
-    @Override
-    public List<CitasDTO> obtenerCitasPorGestor(String name) {
 
-        Users gestor = userInfoRepository.findByName(name)
+    @Override
+    public List<CitasDTO> obtenerCitasPorUsuario(String name) {
+
+        Users usuario = userInfoRepository.findByName(name)
                 .orElseThrow(() -> new IllegalArgumentException("El gestor no existe"));
 
 
-        List<Citas> citas = citasRepository.findByGestor(gestor);
+        List<Citas> citas = citasRepository.findByUsuario(usuario);
 
 
         return citas.stream()
@@ -63,6 +75,12 @@ public class CitasServiceImpl implements ICitasService {
                     dto.setHoraInicio(cita.getHoraInicio());
                     dto.setHoraFin(cita.getHoraFin());
 
+                    TipocitaDTO tipocitaDTO = new TipocitaDTO();
+                    tipocitaDTO.setId(cita.getTipoCita().getId());
+                    tipocitaDTO.setNombre(cita.getTipoCita().getNombre());
+                    tipocitaDTO.setPrecio(cita.getTipoCita().getPrecio());
+                    tipocitaDTO.setSesiones(cita.getTipoCita().getSesiones());
+                    dto.setTipoCita(tipocitaDTO);
 
                     UsersDTO usuarioDTO = new UsersDTO();
                     usuarioDTO.setId(cita.getUsuario().getId());
@@ -83,6 +101,18 @@ public class CitasServiceImpl implements ICitasService {
                 })
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public int cantidadCitasUsuario(String name) {
+        Users usuario = userInfoRepository.findByName(name)
+                .orElseThrow(() -> new IllegalArgumentException("El usuario no existe"));
+
+        LocalDateTime ahora = LocalDateTime.now();
+
+        return citasRepository.countByUsuarioAndFechaHoraAfter(usuario, ahora);
+
+    }
+
 
     @Override
     public List<CitasDTO> obtenerCitasPorGestorYDia(String name, LocalDate diaEspecifico) {
@@ -94,10 +124,18 @@ public class CitasServiceImpl implements ICitasService {
         return citas.stream()
                 .filter(cita -> cita.getHoraInicio().toLocalDate().isEqual(diaEspecifico))
                 .map(cita -> {
+
                     CitasDTO dto = new CitasDTO();
                     dto.setId(cita.getId());
                     dto.setHoraInicio(cita.getHoraInicio());
                     dto.setHoraFin(cita.getHoraFin());
+
+                    TipocitaDTO tipocitaDTO = new TipocitaDTO();
+                    tipocitaDTO.setId(cita.getTipoCita().getId());
+                    tipocitaDTO.setNombre(cita.getTipoCita().getNombre());
+                    tipocitaDTO.setPrecio(cita.getTipoCita().getPrecio());
+                    tipocitaDTO.setSesiones(cita.getTipoCita().getSesiones());
+                    dto.setTipoCita(tipocitaDTO);
 
                     UsersDTO usuarioDTO = new UsersDTO();
                     usuarioDTO.setId(cita.getUsuario().getId());
@@ -111,13 +149,11 @@ public class CitasServiceImpl implements ICitasService {
                     gestorDTO.setEmail(cita.getGestor().getEmail());
                     dto.setGestor(gestorDTO);
 
+
                     return dto;
                 })
                 .collect(Collectors.toList());
     }
-
-
-
 
 
 }

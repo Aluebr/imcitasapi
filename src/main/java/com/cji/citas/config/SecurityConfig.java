@@ -43,9 +43,11 @@ public class SecurityConfig {
 										"/auth/welcome",
 										"/auth/addNewUser",
 										"/auth/generateToken",
-										"/citas/citasgestor",
+										"/citas/citasusuario",
 										"/citas/citagestorydia",
-										"/tipo/cita"
+										"/tipo/cita",
+										"/auth/validateToken",
+										"/citas/cantidad"
 								).permitAll()
 								.requestMatchers("/auth/user/**").authenticated()
 								.requestMatchers("/auth/user/gestores").authenticated()
