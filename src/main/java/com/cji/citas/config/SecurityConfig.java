@@ -48,7 +48,8 @@ public class SecurityConfig {
 										"/tipo/cita",
 										"/auth/validateToken",
 										"/citas/cantidad",
-										"/contact"
+										"/contact",
+										"registerMail"
 								).permitAll()
 								.requestMatchers("/auth/user/**").authenticated()
 								.requestMatchers("/citas/borrar").authenticated()

@@ -1,7 +1,7 @@
 package com.cji.citas.controller;
 
 import com.cji.citas.dto.ContactFormDTO;
-import com.cji.citas.service.impl.EmailService;
+import com.cji.citas.service.impl.EmailServiceImpl;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +13,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class ContactController {
 
     @Autowired
-    private EmailService emailService;
+    private EmailServiceImpl emailServiceImpl;
 
     @PostMapping("/contact")
     public ResponseEntity<String> sendContactEmail(@RequestBody ContactFormDTO contactForm) {
         try {
-            emailService.sendContactMessage(contactForm.getTo(), contactForm.getSubject(), contactForm.getMessage());
+            emailServiceImpl.sendContactMessage(contactForm.getTo(), contactForm.getSubject(), contactForm.getMessage());
+            return ResponseEntity.ok("Mensaje enviado con éxito");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Error al enviar el mensaje");
+        }
+    }
+
+    @PostMapping("/registerMail")
+    public ResponseEntity<String> sendRegisterEmail(@RequestBody ContactFormDTO contactForm) {
+        try {
+            emailServiceImpl.sendRegisterMessage(contactForm.getTo(), contactForm.getSubject(), contactForm.getMessage());
             return ResponseEntity.ok("Mensaje enviado con éxito");
         } catch (MessagingException e) {
             e.printStackTrace();

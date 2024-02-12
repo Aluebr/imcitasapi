@@ -7,3 +7,5 @@ INSERT INTO tipocita (nombre, sesiones, precio) VALUES ('Tramitación documentac
 INSERT INTO tipocita (nombre, sesiones, precio) VALUES ('Trámites personales en general', 1, 15.0);
 INSERT INTO tipocita (nombre, sesiones, precio) VALUES ('Trámites para sociedades', 3, 30.0);
 INSERT INTO tipocita (nombre, sesiones, precio) VALUES ('Empadronamiento y similares', 1, 15.0);
+
+ALTER TABLE citas ADD CONSTRAINT unique_hora_gestor UNIQUE (horaInicio, gestor_id);
