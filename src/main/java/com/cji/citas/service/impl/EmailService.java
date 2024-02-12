@@ -14,16 +14,15 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendContactMessage(String from, String subject, String message) throws MessagingException {
+    public void sendContactMessage(String to, String subject, String message) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+        String[] toAddresses = {to, "imasesorescji@gmail.com"};
 
-        // Aquí, asegúrate de que estás usando correctamente la dirección "to".
-        // Esta dirección debe ser válida y no nula.
-        helper.setTo("imasesorescji@gmail.com");
-        helper.setText(message, true); // true indica que el mensaje puede contener HTML
+        helper.setTo(toAddresses);
+        helper.setText(message, true);
         helper.setSubject(subject);
-        helper.setFrom(from);
+        helper.setFrom("imasesorescji@gmail.com");
 
         mailSender.send(mimeMessage);
     }

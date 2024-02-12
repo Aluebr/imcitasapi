@@ -18,7 +18,7 @@ public class ContactController {
     @PostMapping("/contact")
     public ResponseEntity<String> sendContactEmail(@RequestBody ContactFormDTO contactForm) {
         try {
-            emailService.sendContactMessage(contactForm.getFrom(), contactForm.getSubject(), contactForm.getMessage());
+            emailService.sendContactMessage(contactForm.getTo(), contactForm.getSubject(), contactForm.getMessage());
             return ResponseEntity.ok("Mensaje enviado con éxito");
         } catch (MessagingException e) {
             e.printStackTrace();
