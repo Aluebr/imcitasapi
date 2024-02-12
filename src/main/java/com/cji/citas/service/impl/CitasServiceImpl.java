@@ -28,33 +28,32 @@ public class CitasServiceImpl implements ICitasService {
 
     @Override
     public void crearCita(CitasDTO citasDTO) {
-
-        Citas cita = new Citas();
-
-        cita.setHoraInicio(citasDTO.getHoraInicio());
-        cita.setHoraFin(citasDTO.getHoraFin());
-
-        Tipocita currentTipo = tipocitaRepository.findByNombre(citasDTO.getTipoCita().getNombre())
-                .orElseThrow(() -> new IllegalArgumentException("El tipo de cita no existe"));
-
-        cita.setTipoCita(currentTipo);
-
-        Users currentUser = userInfoRepository.findByName(citasDTO.getUsuario().getName())
-                .orElseThrow(() -> new IllegalArgumentException("El usuario no existe"));
-
-        cita.setUsuario(currentUser);
-
-        Users currentGestor = userInfoRepository.findByName(citasDTO.getGestor().getName())
-                .orElseThrow(() -> new IllegalArgumentException("El gestor no existe"));
-
-        cita.setGestor(currentGestor);
+        int cantidadCitasFuturas = cantidadCitasUsuario(citasDTO.getUsuario().getName());
+        if (cantidadCitasFuturas >= 3) {
+            throw new IllegalStateException("Ya tienes 3 citas pendientes, no puedes pedir más.");
+        } else {
 
 
-        citasRepository.save(cita);
+            Citas cita = new Citas();
+            cita.setHoraInicio(citasDTO.getHoraInicio());
+            cita.setHoraFin(citasDTO.getHoraFin());
 
+            Tipocita currentTipo = tipocitaRepository.findByNombre(citasDTO.getTipoCita().getNombre())
+                    .orElseThrow(() -> new IllegalArgumentException("El tipo de cita no existe"));
+            cita.setTipoCita(currentTipo);
+
+            Users currentUser = userInfoRepository.findByName(citasDTO.getUsuario().getName())
+                    .orElseThrow(() -> new IllegalArgumentException("El usuario no existe"));
+            cita.setUsuario(currentUser);
+
+            Users currentGestor = userInfoRepository.findByName(citasDTO.getGestor().getName())
+                    .orElseThrow(() -> new IllegalArgumentException("El gestor no existe"));
+            cita.setGestor(currentGestor);
+
+            citasRepository.save(cita);
+        }
 
     }
-
 
 
 

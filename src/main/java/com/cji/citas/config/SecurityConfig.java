@@ -47,7 +47,8 @@ public class SecurityConfig {
 										"/citas/citagestorydia",
 										"/tipo/cita",
 										"/auth/validateToken",
-										"/citas/cantidad"
+										"/citas/cantidad",
+										"/contact"
 								).permitAll()
 								.requestMatchers("/auth/user/**").authenticated()
 								.requestMatchers("/auth/user/gestores").authenticated()

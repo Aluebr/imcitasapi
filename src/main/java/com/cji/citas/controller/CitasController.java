@@ -25,14 +25,11 @@ public class CitasController {
     @PostMapping("/crear")
     public ResponseEntity<String> crearCita(@RequestBody CitasDTO citaRequestDTO) {
         try {
-
             citasService.crearCita(citaRequestDTO);
             return ResponseEntity.ok("Cita creada exitosamente");
-        } catch (IllegalArgumentException e) {
-
+        } catch (IllegalStateException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear la cita");
         }
     }
