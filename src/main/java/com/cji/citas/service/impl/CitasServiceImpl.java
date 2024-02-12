@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,7 +55,6 @@ public class CitasServiceImpl implements ICitasService {
         }
 
     }
-
 
 
     @Override
@@ -110,6 +110,27 @@ public class CitasServiceImpl implements ICitasService {
 
         return citasRepository.countByUsuarioAndFechaHoraAfter(usuario, ahora);
 
+    }
+
+    @Override
+    public void borrarCita(String name, String fechaCita) {
+
+        LocalDateTime fechaInicio = LocalDateTime.parse(fechaCita, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+
+        Users usuario = userInfoRepository.findByName(name)
+                .orElseThrow(() -> new IllegalArgumentException("El usuario no existe"));
+
+
+        List<Citas> citas = citasRepository.findByUsuarioAndAndHoraInicio(usuario, fechaInicio);
+
+
+        if (citas.isEmpty()) {
+            throw new IllegalArgumentException("No se encontró ninguna cita para borrar con los criterios especificados.");
+        }
+
+        Citas citaParaBorrar = citas.get(0);
+        citasRepository.delete(citaParaBorrar);
     }
 
 

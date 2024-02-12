@@ -33,6 +33,17 @@ public class CitasController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear la cita");
         }
     }
+    @DeleteMapping("/borrar")
+    public ResponseEntity<String> borrarCita(@RequestParam String name, @RequestParam String fechaCita) {
+        try {
+            citasService.borrarCita(name, fechaCita);
+            return ResponseEntity.ok("Cita borrada con éxito.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error al borrar la cita.");
+        }
+    }
 
     @GetMapping("/citasusuario")
     public ResponseEntity<List<CitasDTO>> obtenerCitasPorGestor(@RequestParam("user") String username) {

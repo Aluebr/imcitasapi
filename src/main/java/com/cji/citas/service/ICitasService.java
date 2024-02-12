@@ -17,6 +17,6 @@ public interface ICitasService {
 
     int cantidadCitasUsuario(String name);
 
-
+    void borrarCita(String name, String fechaCita);
     List<CitasDTO> obtenerCitasPorGestorYDia(String name, LocalDate diaEspecifico);
 }

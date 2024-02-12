@@ -51,6 +51,7 @@ public class SecurityConfig {
 										"/contact"
 								).permitAll()
 								.requestMatchers("/auth/user/**").authenticated()
+								.requestMatchers("/citas/borrar").authenticated()
 								.requestMatchers("/auth/user/gestores").authenticated()
 								.requestMatchers("/auth/admin/**").authenticated()
 								.requestMatchers("/citas/crear").authenticated()

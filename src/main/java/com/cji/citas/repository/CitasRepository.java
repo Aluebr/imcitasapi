@@ -20,6 +20,6 @@ public interface CitasRepository extends JpaRepository<Citas,Long> {
     int countByUsuarioAndFechaHoraAfter(Users usuario, LocalDateTime ahora);
     List<Citas> findByUsuario(Users gestor);
 
-
+    List<Citas> findByUsuarioAndAndHoraInicio(Users usuario, LocalDateTime fechaInicio);
 
 }
