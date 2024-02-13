@@ -47,7 +47,11 @@ public class SecurityConfig {
 										"/citas/citagestorydia",
 										"/tipo/cita",
 										"/auth/validateToken",
-										"/citas/cantidad"
+										"/citas/cantidad",
+										"/swagger",
+										"/swagger-ui/**",
+										"/v3/api-docs/**",
+										"/"
 								).permitAll()
 								.requestMatchers("/auth/user/**").authenticated()
 								.requestMatchers("/citas/borrar").authenticated()
