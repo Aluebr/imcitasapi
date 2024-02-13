@@ -47,14 +47,14 @@ public class SecurityConfig {
 										"/citas/citagestorydia",
 										"/tipo/cita",
 										"/auth/validateToken",
-										"/citas/cantidad",
-										"/contact",
-										"registerMail"
+										"/citas/cantidad"
 								).permitAll()
 								.requestMatchers("/auth/user/**").authenticated()
 								.requestMatchers("/citas/borrar").authenticated()
 								.requestMatchers("/auth/user/gestores").authenticated()
 								.requestMatchers("/auth/admin/**").authenticated()
+								.requestMatchers("/contact").authenticated()
+								.requestMatchers("/registerMail").authenticated()
 								.requestMatchers("/citas/crear").authenticated()
 								.anyRequest().authenticated()
 				)
