@@ -28,8 +28,9 @@ public class EmailServiceImpl {
     public void sendRegisterMessage(String to, String subject, String message) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+        String[] toAddresses = {to};
 
-        helper.setTo(to);
+        helper.setTo(toAddresses);
         helper.setText(message, true);
         helper.setSubject(subject);
         helper.setFrom("imasesorescji@gmail.com");
