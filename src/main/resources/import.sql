@@ -1,4 +1,4 @@
-INSERT INTO users (name, email,password,roles) values ('Carlos','carlosch@ieselcaminas.org','$2a$10$XFaSbq8.TSC5TlFNop8y3.hikxHdXw6M4L/Mtk4CFaiqIxHbwsUPS',('ROLE_USER,ROLE_ADMIN'));
+INSERT INTO users (name, email,password,roles) values ('Carlos','carlosch@ieselcaminas.org','$2a$10$XFaSbq8.TSC5TlFNop8y3.hikxHdXw6M4L/Mtk4CFaiqIxHbwsUPS',('ROLE_USER'));
 INSERT INTO users (name, email,password,roles) values ('Marian','marian@ieselcaminas.org','$2a$10$XFaSbq8.TSC5TlFNop8y3.hikxHdXw6M4L/Mtk4CFaiqIxHbwsUPS',('ROLE_USER,ROLE_ADMIN'));
 INSERT INTO users (name, email,password,roles) values ('Ionut','ionut@ieselcaminas.org','$2a$10$XFaSbq8.TSC5TlFNop8y3.hikxHdXw6M4L/Mtk4CFaiqIxHbwsUPS',('ROLE_USER,ROLE_ADMIN'));
 
